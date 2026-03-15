@@ -1,15 +1,12 @@
 "use client"
 import React from 'react';
-// import { Link, useLocation, 
-//   useNavigate
-//  } from 'react-router-dom';
+
 import {BsGithub, BsGoogle} from "react-icons/bs"
 import Image from 'next/image';
 import img from '../../../public/assets/images/login/login.svg'
 import Link from 'next/link';
 
 const page = () => {
-      //  const {  createUser} = useContext(AuthContext);
 
 
       const handleSignUp =async (event)=>{
@@ -20,16 +17,19 @@ const page = () => {
               password :event.target.password.value,
 
             };
-            console.log(newUser)
-             const res = await fetch("/api/signup", {
+            // console.log(newUser)
+             const resp = await fetch("http://localhost:3000/signup/api", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(newUser)
   });
-   const data = await res.json();
-  console.log(data);
+  //  const data = await resp.json();
+  // console.log(resp);
+  if(resp.status === 200){
+    event.target.reset()
+  }
             // const form = event.target;
             // const name = form.name.value;
             // const email = form.email.value;
