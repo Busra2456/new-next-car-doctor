@@ -1,13 +1,9 @@
 
+import { getServices } from "@/services/getServices";
 import ServicesCards from "../Cards/ServicesCards";
 
-const getServices = async () =>{
-      const res = await fetch('http://localhost:3000/services/api/get-all')
-      const services = res.json()
-      return services
-}
-const Services = async() => {
-      const {services} = await getServices();
+const Services =async () => {
+      const {services} =await getServices();
       // console.log(services)
       //   const [services, setServices] = useState([]);
       //     const [search,setSearch] = useState('')
