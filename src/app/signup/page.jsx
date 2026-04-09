@@ -30,16 +30,6 @@ const page = () => {
   if(resp.status === 200){
     event.target.reset()
   }
-            // const form = event.target;
-            // const name = form.name.value;
-            // const email = form.email.value;
-            // const password = form.password.value;
-            // console.log(name,email,password)
-
-         
-              // console.log(user)
-            // })
-            // .catch(error =>console.log(error))
             
           }
       return (

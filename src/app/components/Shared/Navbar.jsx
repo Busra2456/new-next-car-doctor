@@ -5,6 +5,7 @@ import logo from "../../../../public/assets/logo.svg"
 import { FiShoppingCart } from "react-icons/fi";
 import { IoMdSearch } from "react-icons/io";
 import React from 'react';
+import { signOut, useSession } from 'next-auth/react';
 
 //   const {user,  logOut} = useContext(AuthContext);
 //   const handleLogOut = () =>{
@@ -53,6 +54,9 @@ import React from 'react';
        :<li><Link to={'/Login'}>Login</Link></li>} */}
       {/* </> */}
 const Navbar = () => {
+  // const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  console.log(session)
       return (
         
             <div className="navbar mt-5 bg-base-100 max-w-7xl h-28 mb-4 container mx-auto">
@@ -95,8 +99,28 @@ const Navbar = () => {
               <FiShoppingCart className='text-2xl'/>
               <IoMdSearch  className='text-2xl'/>
             <button className="btn btn-outline text-[#FF3811] btn-warning border-[#FF3811] text-[10px]">Appointment</button>
-            <Link href={"/login"}>
-            <button className='btn btn-outline text-white bg-[#FF3811]'>Login</button></Link>
+{/* 
+            {status === "authenticated" && (
+  <Image
+    alt="user"
+    className="rounded-full border-[2px] border-[#FF3811]"
+    src={session?.user?.image || "/default-user.png"}
+    width={40}
+    height={40}
+  />
+)} */}
+
+           { status === 'authenticated'  &&  <div>
+              <Image alt="" className='rounded-full border-[2px] border-[#FF3811]' src={session?.user?.image} height={24} width={24}/> 
+            </div> }
+
+            {
+              status === 'loading' && <h6>Loading...</h6>
+            }
+          { status === 'unauthenticated' && <Link href={"/login"}>
+            <button className='btn btn-outline text-white bg-[#FF3811]'>Login</button></Link> }
+           {status === 'authenticated' && <button onClick={() => signOut()} className='btn btn-outline text-white bg-[#FF3811]'>Logout</button>
+            }
             </div>
             </div>
           </div>

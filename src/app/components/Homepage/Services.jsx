@@ -1,10 +1,13 @@
-// "use client"
-// import { useEffect, useState } from "react";
-// import { useState } from "react";
-import ServicesCards from "../Cards/ServicesCards";
-import {services} from '../../../lib/services'
 
-const Services = () => {
+import ServicesCards from "../Cards/ServicesCards";
+
+const getServices = async () =>{
+      const res = await fetch('http://localhost:3000/services/api/get-all')
+      const services = res.json()
+      return services
+}
+const Services = async() => {
+      const {services} = await getServices();
       // console.log(services)
       //   const [services, setServices] = useState([]);
       //     const [search,setSearch] = useState('')
@@ -57,8 +60,8 @@ const Services = () => {
                        {/* {
                         services.map((service) => (<ServicesCards key={service._id} services={service} ></ServicesCards>))
                        } */}
-                       {
-                        services.map(service =>(<ServicesCards service={service} key={service._id}></ServicesCards>))
+                       { services?.length > 0 &&
+                        services?.map(service =>(<ServicesCards service={service} key={service._id}></ServicesCards>))
                        }
                   </div>
             </div>
