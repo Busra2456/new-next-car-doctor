@@ -4,13 +4,14 @@ import Image from 'next/image';
 import img from '../../../public/assets/images/login/login.svg'
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import SocialSignin from '../components/Shared/SocialSignin';
-import { useSession } from "next-auth/react";
 
 const page = () => {
-          const router = useRouter();
-          const { session } = useSession();
+          // const router = useRouter();
+          // const { session } = useSession();
+          const searchParams = useSearchParams();
+          const path = searchParams.get('redirect')
             const handleLogin = async (event) =>{
             event.preventDefault()
             const email = event.target.email.value;
@@ -18,11 +19,12 @@ const page = () => {
             const resp = await signIn('credentials',{
               email, 
               password, 
-              redirect : false
+              redirect : true,
+              callbackUrl : path ? path : '/',
             });
-           if(resp.status === 200){
-                   router.push('/')
-              }
+          //  if(resp.status === 200){
+          //          router.push('/')
+          //     }
             
 
          

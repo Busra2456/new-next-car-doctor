@@ -1,17 +1,18 @@
 // "use client"
 import Image from 'next/image';
 import Link from 'next/link';
-// import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa";
 const ServicesCards = ({service}) => {
-            const {_id, title, img, price} = service || {};
+            const {_id,
+ title, img, price} = service ||{};
+ 
 
       return (
               <div className="card shadow-sm">
             <figure className="px-10 pt-10">
               <Image
                 src={img}
-                 width={400} height={400} 
+                 width={240} height={640} 
                 alt="Shoes"
                 className="rounded-xl " />
             </figure>

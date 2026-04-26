@@ -1,17 +1,22 @@
 "use client"
 import { signIn, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { BsGithub, BsGoogle} from "react-icons/bs"
 const SocialSignin = () => {
-      const router = useRouter()
+      // const router = useRouter()
+      const searchParams = useSearchParams();
+                const path = searchParams.get('redirect')
       const session = useSession()
       const handleSocialLogin = (provider) =>{
-            const resp = signIn(provider,{redirect : false})
+            const resp = signIn(provider,{
+                  redirect : true,
+                   callbackUrl : path ? path : '/',
+            })
            
 
       }
-      if(session.status === "authenticated")
-             router.push('/')
+      // if(session.status === "authenticated")
+      //        router.push('/')
       return (
             <div className="flex items-center justify-center space-x-3">
                    

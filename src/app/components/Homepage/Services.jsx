@@ -2,37 +2,11 @@
 import { getServices } from "@/services/getServices";
 import ServicesCards from "../Cards/ServicesCards";
 
-const Services =async () => {
+const Services = async () => {
       const {services} =await getServices();
-      // console.log(services)
-      //   const [services, setServices] = useState([]);
-      //     const [search,setSearch] = useState('')
-      // const [asc,setAsc] = useState(true);
-     
-
-  
-
- 
-
-     
-    
-      // useEffect(() =>{
-      //       // fetch(`http://localhost:3000/services?sort=${asc?'asc':'desc'}&search=${search}`)
-      //       fetch("/services.json")
-           
-      //       .then(res => res.json())
-      //       .then(data => setServices(data))
-      // } ,[
-      //       // asc,search
-      // ])
       
-
-      // const handleSearch = e =>{
-      //       e.preventDefault();
-      //       const searchText = e.target.search.value ;
-      //       // console.log(searchText);
-      //       setSearch(searchText);
-      // }
+      
+     
       return (
             <div>
                     <div className="text-center mt-4 max-w-2xl mx-auto space-y-2">
@@ -42,20 +16,10 @@ const Services =async () => {
 
                         
 
-                        {/* <form onSubmit={handleSearch}>
-                             <input type="text" name="search" id="" />
-                             <input type="submit" value="search" className="btn" />
-                        </form>  */}
-                  {/* <button 
-                        className="btn btn-secondary"
-                        onClick={() => setAsc(!asc)}>
-                       {asc ?'Price: High to Low':' Price: Low To Hight'}
-                        </button> */}
+                      
                   </div> 
                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                       {/* {
-                        services.map((service) => (<ServicesCards key={service._id} services={service} ></ServicesCards>))
-                       } */}
+                      
                        { services?.length > 0 &&
                         services?.map(service =>(<ServicesCards service={service} key={service._id}></ServicesCards>))
                        }

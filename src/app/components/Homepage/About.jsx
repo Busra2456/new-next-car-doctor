@@ -8,10 +8,12 @@ const About = () => {
    <div className='lg:w-1/2 relative ml-6 mb-28'>
    <Image
       src={person}
+       width={240} height={640} 
       className="w-6/7 h-[200px] rounded-lg shadow-2xl"
     />
      <Image
       src={parts}
+       width={240} height={640} 
       className="w-2/3 absolute border-7 border-white right-1 top-39 rounded-lg  h-[170px] shadow-2xl"
     />
    </div>

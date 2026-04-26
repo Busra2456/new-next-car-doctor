@@ -30,6 +30,12 @@ import { signOut, useSession } from 'next-auth/react';
           title : "Services",
           path : "/services"
         },
+         {
+          title : "My Bookings",
+          path : "/my-bookings"
+        },
+         
+
           {
           title : "Blog",
           path : "/blog"
