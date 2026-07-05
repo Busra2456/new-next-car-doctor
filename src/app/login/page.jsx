@@ -25,8 +25,8 @@ const { data: session, status } = useSession();          // const { session } = 
           //  if(resp.status === 200){
           //          router.push('/')
           //     }
-             if (status === "authenticated") {
-                 router.push("/");
+             if (resp?.ok) {
+  router.push("/");
 }
 
          
