@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import {cookies} from "next/headers";
+// import {cookies} from "next/headers";
 export const middleware = async (request) =>{
       const token = request.cookies.get("next-auth.session-token");
       const pathname = request.nextUrl.pathname

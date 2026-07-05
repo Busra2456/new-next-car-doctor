@@ -3,15 +3,15 @@ import React from 'react';
 import Image from 'next/image';
 import img from '../../../public/assets/images/login/login.svg'
 import Link from 'next/link';
-import { signIn } from 'next-auth/react';
-import { useSearchParams } from 'next/navigation';
+import { signIn, useSession } from 'next-auth/react';
 import SocialSignin from '../components/Shared/SocialSignin';
+import { useRouter} from 'next/navigation';
 
 const page = () => {
-          // const router = useRouter();
-          // const { session } = useSession();
-          const searchParams = useSearchParams();
-          const path = searchParams.get('redirect')
+          const router = useRouter();
+const { data: session, status } = useSession();          // const { session } = useSession();
+          // const searchParams = useSearchParams();
+          // const path = searchParams.get('redirect')
             const handleLogin = async (event) =>{
             event.preventDefault()
             const email = event.target.email.value;
@@ -19,23 +19,25 @@ const page = () => {
             const resp = await signIn('credentials',{
               email, 
               password, 
-              redirect : true,
-              callbackUrl : path ? path : '/',
+              redirect : false,
+              callbackUrl :'/',
             });
           //  if(resp.status === 200){
           //          router.push('/')
           //     }
-            
+             if (status === "authenticated") {
+                 router.push("/");
+}
 
          
       }
       return (
-                 <div className="hero bg-base-200 min-h-screen">
-  <div className="hero-content flex-col lg:flex-row">
-    <div className=" mr-12 w-1/2">
+                 <div className="min-h-screen hero bg-base-200">
+  <div className="flex-col hero-content lg:flex-row">
+    <div className="w-1/2 mr-12 ">
       <Image src={img} alt="" />
     </div>
-    <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
+    <div className="w-full max-w-sm shadow-2xl card bg-base-100 shrink-0">
       <div className="card-body">
       <h1 className="text-3xl font-bold text-center">Login</h1>
        <form
