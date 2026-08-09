@@ -23,5 +23,5 @@ export const middleware = async (request) => {
 };
 
 export const config = {
-  matcher: ["/my-bookings/:path*", "/services/:path*"],
+  matcher: [],
 };
