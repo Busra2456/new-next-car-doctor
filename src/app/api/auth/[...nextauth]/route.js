@@ -1,76 +1,185 @@
+// import { connectDB } from "@/lib/connectDB";
+// import NextAuth from "next-auth/next";
+// import bcrypt from "bcrypt";
+// import CredentialsProvider from "next-auth/providers/credentials";
+// import GoogleProvider from "next-auth/providers/google"
+// import GitHubProvider from "next-auth/providers/github";
+
+// const handler = NextAuth({
+//       secret : process.env.AUTH_SECRET,
+//             session: {
+//                   strategy : 'jwt',
+//                   maxAge : 30 * 24 * 60 * 60
+//             },
+//             providers: [
+//                   CredentialsProvider({
+//                         credentials : {
+//                               email : {},
+//                               password : {},
+//                         },
+//                         async authorize (credentials) {
+//                               const { email , password } = credentials;
+//                             if(!email || !password) {
+//                                 return null; 
+//                             }
+//                             const db = await connectDB();
+//                             const currentUser = await db.collection('users').findOne({email})
+//                             if(!currentUser){
+//                               return null;
+//                             }
+//                             const passwordMatched = bcrypt.compareSync(password,
+//                               currentUser.password);
+//                             if(!passwordMatched){
+//                               return null;
+//                             }
+//                             return currentUser;
+//                         }
+
+//                   }),
+//        GoogleProvider({
+//     clientId: process.env.GOOGLE_CLIENT_ID,
+//     clientSecret: process.env.GOOGLE_CLIENT_SECRET
+//   }),
+//       GitHubProvider({
+//            clientId: process.env.NEXT_PUBLIC_GITHUB_ID,
+//            clientSecret: process.env.NEXT_PUBLIC_GITHUB_SECRET
+//       })
+//      ],
+//             callbacks: {
+//                   async signIn({ user,account}){
+//                         if (account.provider === "google" || account.provider === "github"){
+//                               const { name, email ,image } = user;
+//                               try{
+//                                     const db = await connectDB()
+//                                     const userCollection = db.collection('users')
+//                                     const userExist = await userCollection.findOne({email})
+//                                     if(!userExist){
+//                                const res = await userCollection.insertOne(user);
+                                          
+
+//                                     } else {
+//                                           return user;
+//                                     } 
+//                               } catch (error){
+//                                     console.log(error)
+//                               }
+//                         } else {
+//                               return user;
+//                         }
+//                   }
+//             },
+//             pages: {
+//                   signIn :'/login'
+//             },
+
+//       });
+//  export { handler as GET, handler as POST }; 
 import { connectDB } from "@/lib/connectDB";
 import NextAuth from "next-auth/next";
 import bcrypt from "bcrypt";
 import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google"
+import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
 
 const handler = NextAuth({
-      secret : process.env.AUTH_SECRET,
-            session: {
-                  strategy : 'jwt',
-                  maxAge : 30 * 24 * 60 * 60
-            },
-            providers: [
-                  CredentialsProvider({
-                        credentials : {
-                              email : {},
-                              password : {},
-                        },
-                        async authorize (credentials) {
-                              const { email , password } = credentials;
-                            if(!email || !password) {
-                                return null; 
-                            }
-                            const db = await connectDB();
-                            const currentUser = await db.collection('users').findOne({email})
-                            if(!currentUser){
-                              return null;
-                            }
-                            const passwordMatched = bcrypt.compareSync(password,
-                              currentUser.password);
-                            if(!passwordMatched){
-                              return null;
-                            }
-                            return currentUser;
-                        }
+  secret: process.env.AUTH_SECRET,
 
-                  }),
-       GoogleProvider({
-    clientId: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET
-  }),
-      GitHubProvider({
-           clientId: process.env.NEXT_PUBLIC_GITHUB_ID,
-           clientSecret: process.env.NEXT_PUBLIC_GITHUB_SECRET
-      })
-     ],
-            callbacks: {
-                  async signIn({ user,account}){
-                        if (account.provider === "google" || account.provider === "github"){
-                              const { name, email ,image } = user;
-                              try{
-                                    const db = await connectDB()
-                                    const userCollection = db.collection('users')
-                                    const userExist = await userCollection.findOne({email})
-                                    if(!userExist){
-                               const res = await userCollection.insertOne(user);
-                                          
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60,
+  },
 
-                                    } else {
-                                          return user;
-                                    } 
-                              } catch (error){
-                                    console.log(error)
-                              }
-                        } else {
-                              return user;
-                        }
-                  }
-            },
-            pages: {
-                  signIn :'/login'
-            },
+  providers: [
+    CredentialsProvider({
+      credentials: {
+        email: {},
+        password: {},
+      },
 
-      });
- export { handler as GET, handler as POST }; 
+      async authorize(credentials) {
+        const { email, password } = credentials;
+
+        if (!email || !password) {
+          return null;
+        }
+
+        const db = await connectDB();
+
+        const currentUser = await db
+          .collection("users")
+          .findOne({ email });
+
+        if (!currentUser) {
+          return null;
+        }
+
+        const passwordMatched = await bcrypt.compare(
+          password,
+          currentUser.password
+        );
+
+        if (!passwordMatched) {
+          return null;
+        }
+
+        // Don't send password to NextAuth
+        const { password: _, ...safeUser } = currentUser;
+
+        return {
+          ...safeUser,
+          id: currentUser._id.toString(),
+        };
+      },
+    }),
+
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+
+    GitHubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    }),
+  ],
+
+  callbacks: {
+    async signIn({ user, account }) {
+      if (
+        account?.provider === "google" ||
+        account?.provider === "github"
+      ) {
+        const { name, email, image } = user;
+
+        try {
+          const db = await connectDB();
+          const userCollection = db.collection("users");
+
+          const userExist = await userCollection.findOne({ email });
+
+          if (!userExist) {
+            await userCollection.insertOne({
+              name,
+              email,
+              image,
+              provider: account.provider,
+            });
+          }
+
+          return true;
+        } catch (error) {
+          console.error("Social login error:", error);
+          return false;
+        }
+      }
+
+      return true;
+    },
+  },
+
+  pages: {
+    signIn: "/login",
+  },
+});
+
+export { handler as GET, handler as POST };
