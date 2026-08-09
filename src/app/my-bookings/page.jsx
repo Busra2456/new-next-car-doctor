@@ -10,18 +10,25 @@ const page = () => {
       //             const id = params.id;
       const [bookings,setBookings] = useState([])
                   const session = useSession();
-                  const loadData = async () =>{
-                          const resp = await fetch(`http://localhost:3000/my-bookings/api/${session?.data?.user?.email}`)
-                          const data = await resp.json();
-                          setBookings(data?.myBookings)
+               const loadData = async () => {
+  if (!session?.data?.user?.email) return;
 
-                         }
+  const resp = await fetch(
+    `/my-bookings/api/${session.data.user.email}`
+  );
+
+  const data = await resp.json();
+  setBookings(data?.myBookings || []);
+};
                         //  console.log(data)
 
                          const handleDelete = async (id) => {
-            const deleted = await fetch(`http://localhost:3000/my-bookings/api/booking/${id}`,{
-                    method: 'DELETE',
-            });
+            const deleted = await fetch(
+  `/my-bookings/api/booking/${id}`,
+  {
+    method: "DELETE",
+  }
+);
              const resp = await deleted.json();
             
           
@@ -31,22 +38,22 @@ const page = () => {
              
            
             }
-                         useEffect(()=>{
-                              loadData()
-                         },[session])
+                        useEffect(() => {
+  loadData();
+}, [session?.data?.user?.email]);
       return (
             <div className='container mx-auto'>
                  <div className="relative h-72">
                                         <Image
-                                        className="absolute h-72 w-full left-0 top-0 object-cover"
+                                        className="absolute top-0 left-0 object-cover w-full h-72"
                                         src={"/assets/images/about_us/parts.jpg"}
                                         alt="service"
                                         width={1920}
                                         height={1080}
                                         style={{width: "90vw"}}
                                         />
-                                        <div className="absolute h-full left-0 top-0 flex items-center justify-center">
-                                              <h1 className="text-white text-3xl font-bold flex justify-center">
+                                        <div className="absolute top-0 left-0 flex items-center justify-center h-full">
+                                              <h1 className="flex justify-center text-3xl font-bold text-white">
                                                    My Bookings
                                               </h1>
                                         </div>

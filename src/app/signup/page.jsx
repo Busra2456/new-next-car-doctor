@@ -18,27 +18,29 @@ const page = () => {
 
             };
             // console.log(newUser)
-             const resp = await fetch("http://localhost:3000/signup/api", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(newUser)
-  });
-  //  const data = await resp.json();
-  // console.log(resp);
+             const resp = await fetch("/signup/api", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify(newUser),
+});
+ 
   if(resp.status === 200){
     event.target.reset()
   }
             
           }
       return (
-             <div className="hero bg-base-200 min-h-screen">
-           <div className="hero-content flex-col lg:flex-row">
-             <div className=" mr-12 w-1/2">
-               <Image src={img} alt="" />
+             <div className="min-h-screen hero bg-base-200">
+           <div className="flex-col hero-content lg:flex-row">
+             <div className="w-1/2 mr-12 ">
+               <Image
+  src={img}
+  alt="Car Doctor signup illustration"
+/>
              </div>
-             <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
+             <div className="w-full max-w-sm shadow-2xl card bg-base-100 shrink-0">
                <div className="card-body">
                <h1 className="text-3xl font-bold text-center">Sign Up</h1>
                 <form onSubmit={handleSignUp}>
@@ -56,8 +58,8 @@ const page = () => {
                  </fieldset>
                  </form>
                   <div className='text-center'>
-                             <button className='text-xl px-4 py-2'> <BsGoogle/></button>
-                             <button className='text-xl px-4 py-2'> <BsGithub/></button>
+                             <button className='px-4 py-2 text-xl'> <BsGoogle/></button>
+                             <button className='px-4 py-2 text-xl'> <BsGithub/></button>
                          </div>
                  <p className='my-4 text-center '>Already Have an Account<Link href="/login" className='text-[#FF3811] font-bold ml-2' >Login</Link></p>
                </div>

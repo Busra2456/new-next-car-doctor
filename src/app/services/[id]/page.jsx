@@ -9,9 +9,12 @@ export const metadata = {
 
 const page = async ({params}) => {
       const {id} = await params;
-      const res = await fetch(`http://localhost:3000/services/api/${id}`, {
-  cache: "no-store",
-});
+      const res = await fetch(
+  `${process.env.NEXT_PUBLIC_BASE_URL}/services/api/${id}`,
+  {
+    cache: "no-store",
+  }
+);
 
 if (!res.ok) {
   throw new Error("Service not found"); 
@@ -32,7 +35,7 @@ console.log("buuuuuuus", service)
                 <div>
                     <div className="relative h-72">
                          <Image
-                        className="absolute h-72 w-full left-0 top-0 object-cover"
+                        className="absolute top-0 left-0 object-cover w-full h-72"
                         src={img}
                         alt="service"
                         width={1920}
@@ -40,8 +43,8 @@ console.log("buuuuuuus", service)
                         style={{width: "90vw"}}
                         />
                      
-                        <div className="absolute h-full left-0 top-0 flex items-center justify-center">
-                              <h1 className="text-white text-3xl font-bold flex justify-center">
+                        <div className="absolute top-0 left-0 flex items-center justify-center h-full">
+                              <h1 className="flex justify-center text-3xl font-bold text-white">
                                    Details of {title}
                               </h1>
                         </div>
@@ -55,9 +58,9 @@ console.log("buuuuuuus", service)
                 </div>
                 <div className="my-6">
                   <div className="grid grid-cols-3 gap-6">
-                        <div className="col-span-2 grid grid-cols-2 gap-6">
+                        <div className="grid grid-cols-2 col-span-2 gap-6">
                               {facility?.map((item,index)=>(
-                                    <div className="bg-rose-100 p-4 border-t-4 border-t-red-500 rounded-xl" key={index}
+                                    <div className="p-4 border-t-4 bg-rose-100 border-t-red-500 rounded-xl" key={index}
                                     >
                                           <h2 className="text-xl font-bold">{item?.name}</h2>
                                           <p>{item?.details}</p>
@@ -73,11 +76,11 @@ console.log("buuuuuuus", service)
                                 height={500}
                                 style={{width: "90vw"}}/>
                               <div className="flex my-4">
-                                    <h2 className=" text-xl font-bold">Price</h2>
+                                    <h2 className="text-xl font-bold ">Price</h2>
                                     <p className="text-2xl text-rose-500">${price}</p>
                               </div>
                               <Link href={`/checkouts/${_id}`} >
-                              <button className="bg-rose-500 px-3 py-2 rounded-lg mt-2 w-full">Check out</button>
+                              <button className="w-full px-3 py-2 mt-2 rounded-lg bg-rose-500">Check out</button>
                               </Link>
                         </div>
                   </div>

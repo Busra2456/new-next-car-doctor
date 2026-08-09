@@ -13,15 +13,14 @@ const page = () => {
                   const {data} = useSession();
                   const [booking,setBooking] = useState({});
                   const loadBooking = async () =>{
-                        const bookingDetail =await fetch(`http://localhost:3000/my-bookings/api/booking/${id}`);
+                  const bookingDetail = await fetch(`/my-bookings/api/booking/${id}`);
                         const data = await bookingDetail.json();
                         setBooking(data.data);
                        
-                          const details = await getServicesDetails(id);
-                          setService(details.service);
+                        //   const details = await getServicesDetails(id);
+                        //   setService(details.service);
                       
                          }
-                         console.log("kkkkkkkkk",booking)
                   const {_id,title, img, price, } = booking || {};
       
                   const handleUpdateBooking = async (event) =>{
@@ -36,15 +35,16 @@ const page = () => {
                        
                        
                   }
-                   const resp = await fetch(`http://localhost:3000/my-bookings/api/booking/${id}`,{
-                        method:"PATCH",
-                        body:JSON.stringify(updateBooking),
-                        headers:{
-                              "content-type" : "application/json"
-                        },
-                   },
-                   
-                  )
+                  const resp = await fetch(
+  `/my-bookings/api/booking/${id}`,
+  {
+    method: "PATCH",
+    body: JSON.stringify(updateBooking),
+    headers: {
+      "content-type": "application/json",
+    },
+  }
+);
                   if(resp.status === 200){
                         toast.success("updated successfully")
                    }
@@ -67,11 +67,11 @@ const page = () => {
                                                                     src={img}
                                                                      width={1020} height={1080} 
                                                                     alt="service"
-                                             className="absolute h-72 w-full left-0 top-0 object-cover" 
+                                             className="absolute top-0 left-0 object-cover w-full h-72" 
                                              style={{width:"90vw"}}
                                              />
-                                                      <div className="absolute h-full left-0 top-0 flex items-center justify-center">
-                                                            <h1 className="text-white text-3xl font-bold flex justify-center">
+                                                      <div className="absolute top-0 left-0 flex items-center justify-center h-full">
+                                                            <h1 className="flex justify-center text-3xl font-bold text-white">
                                                                  Update Booking
                                                                   {title}
                                                             </h1>
@@ -82,14 +82,14 @@ const page = () => {
                                                  <form 
                                                  onSubmit={handleUpdateBooking}
                                                  >
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 ">
+                              <div className="grid grid-cols-1 gap-6 mt-6 md:grid-cols-2 ">
                             
                             
-                     <div className=" ">
+                     <div className="">
                     
                       <input type="text" name="name" 
                       defaultValue={data?.user?.name} 
-                      className="input w-full" placeholder="Service Name" />
+                      className="w-full input" placeholder="Service Name" />
                       
                      </div>
                      <div>
@@ -98,13 +98,13 @@ const page = () => {
                   //    defaultValue={new Date().toISOString().split("T")[0]}
                   defaultValue={booking.date} 
                      
-                     type="date" name="date" className="input w-full" />
+                     type="date" name="date" className="w-full input" />
                      </div>
                      
                     
                       <div>
                      
-                      <input type="text" name="email" className="input w-full"
+                      <input type="text" name="email" className="w-full input"
                        defaultValue={data?.user?.email} 
                        placeholder="email"  />
                       
@@ -115,23 +115,23 @@ const page = () => {
                        defaultValue={booking.price} 
                        readOnly
                        name='price'
-                       className="input w-full" placeholder="Price" />
+                       className="w-full input" placeholder="Price" />
                      
                       </div>
-                       <div className=" ">
+                       <div className="">
                     
                       <input type="text" name="phone" 
                       defaultValue={booking.phone} 
-                      className="input w-full" placeholder="Your phone" />
+                      className="w-full input" placeholder="Your phone" />
                       
                      </div>
             
-                      <div className=" ">
+                      <div className="">
                     
                       <input
                         defaultValue={booking.address} 
                        type="text" name="address" 
-                      className="input w-full" placeholder="Your address" />
+                      className="w-full input" placeholder="Your address" />
                       
                      </div>
                     

@@ -37,14 +37,23 @@ const checkout = () => {
                   img :img
                  
             }
-             const resp = await fetch('http://localhost:3000/checkouts/api/new-booking',{
-                  method:"POST",
-                  body:JSON.stringify(newBooking),
-                  headers:{
-                        "content-type" : "application/json"
-                  }
-             })
-             const response = await resp?.json()
+            const resp = await fetch('/checkouts/api/new-booking', {
+  method: "POST",
+  body: JSON.stringify(newBooking),
+  headers: {
+    "content-type": "application/json",
+  },
+});
+
+const response = await resp.json();
+if (resp.ok) {
+  toast.success(response?.message || "Booking created successfully");
+  event.target.reset();
+} else {
+  toast.error(response?.message || "Booking failed");
+}
+
+
              toast.success(response?.message)
              event.target.reset()
            
@@ -63,11 +72,11 @@ const checkout = () => {
                                                         src={img}
                                                          width={1020} height={1080} 
                                                         alt="service"
-                                 className="absolute h-72 w-full left-0 top-0 object-cover" 
+                                 className="absolute top-0 left-0 object-cover w-full h-72" 
                                  style={{width:"90vw"}}
                                  />
-                                          <div className="absolute h-full left-0 top-0 flex items-center justify-center">
-                                                <h1 className="text-white text-3xl font-bold flex justify-center">
+                                          <div className="absolute top-0 left-0 flex items-center justify-center h-full">
+                                                <h1 className="flex justify-center text-3xl font-bold text-white">
                                                      Checkout {title}
                                                 </h1>
                                           </div>
@@ -77,25 +86,25 @@ const checkout = () => {
                                      <form 
                                      onSubmit={handleBooking}
                                      >
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 ">
+                  <div className="grid grid-cols-1 gap-6 mt-6 md:grid-cols-2 ">
                 
                 
-         <div className=" ">
+         <div className="">
         
           <input type="text" name="name" 
           defaultValue={data?.user?.name} 
-          className="input w-full" placeholder="Service Name" />
+          className="w-full input" placeholder="Service Name" />
           
          </div>
          <div>
          
-         <input defaultValue={new Date().toISOString().split("T")[0]} type="date" name="date" className="input w-full" />
+         <input defaultValue={new Date().toISOString().split("T")[0]} type="date" name="date" className="w-full input" />
          </div>
          
         
           <div>
          
-          <input type="text" name="email" className="input w-full"
+          <input type="text" name="email" className="w-full input"
            defaultValue={data?.user?.email} 
            placeholder="email"  />
           
@@ -106,20 +115,20 @@ const checkout = () => {
            defaultValue={price} 
            readOnly
            name='price'
-           className="input w-full" placeholder="Price" />
+           className="w-full input" placeholder="Price" />
          
           </div>
-           <div className=" ">
+           <div className="">
         
           <input type="text" name="phone" 
-          className="input w-full" placeholder="Your phone" />
+          className="w-full input" placeholder="Your phone" />
           
          </div>
 
-          <div className=" ">
+          <div className="">
         
           <input type="text" name="address" 
-          className="input w-full" placeholder="Your address" />
+          className="w-full input" placeholder="Your address" />
           
          </div>
         
