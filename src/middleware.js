@@ -13,5 +13,5 @@ export const middleware = async (request) =>{
       return NextResponse.next();
 };
 export const config = {
-      matcher: ["/my-bookings/:path*"]
+      matcher: ["/my-bookings/:path","/services/:path"]
 }
