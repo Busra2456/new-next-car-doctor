@@ -22,13 +22,8 @@ if (!res.ok) {
 
 const data = await res.json();
 const service = data.service;
-      // const details = getServicesDetails(params.id)
-      //  const {id} = await params;
-     
-      // const service = details?.service || {};
-     
+      
 const {_id,title, description,img, price, facility} = service;
-console.log("buuuuuuus", service)
       return (
             <div className="w-11/12 mx-auto my-10">
                  
