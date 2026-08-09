@@ -19,33 +19,27 @@
 //       console.log(error)
 //   }
 // }
-
 import { MongoClient, ServerApiVersion } from "mongodb";
 
-const uri = process.env.MONGODB_URI;
-
-if (!uri) {
-  throw new Error("MONGODB_URI is not defined");
-}
-
-const options = {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
-};
-
-let client;
 let db;
 
 export const connectDB = async () => {
-  if (db) {
-    return db;
+  if (db) return db;
+
+  const uri = process.env.MONGODB_URI;
+
+  if (!uri) {
+    throw new Error("MONGODB_URI is not configured");
   }
 
   try {
-    client = new MongoClient(uri, options);
+    const client = new MongoClient(uri, {
+      serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true,
+      },
+    });
 
     await client.connect();
 
@@ -55,7 +49,7 @@ export const connectDB = async () => {
 
     return db;
   } catch (error) {
-    console.error("MongoDB connection error:", error);
+    console.error("MongoDB connection failed:", error);
     throw error;
   }
 };
